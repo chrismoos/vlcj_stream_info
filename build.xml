@@ -1,0 +1,43 @@
+<project name="vlcj_stream_info" default="run" basedir=".">
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="classes.dir" location="${build}/classes"/>
+  <property name="jar.dir" location="${build}/jar"/>
+
+  <path id="classpath">
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="compile">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src}" destdir="${classes.dir}">
+      <classpath refid="classpath"/>
+    </javac>
+    <copy todir="${classes.dir}" verbose="yes" flatten="yes" failonerror="yes">
+      <fileset dir="lib">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="${jar.dir}"/>
+    <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="com.cmoos.vlcj.VLCJStreamInfo"/>
+      </manifest>
+      <zipgroupfileset dir="lib" includes="**/*.jar"/>
+    </jar>
+  </target>
+
+  <target name="run" depends="jar">
+    <java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
+    </java>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+  </target>
+</project>
