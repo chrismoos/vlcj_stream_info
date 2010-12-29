@@ -11,6 +11,7 @@
   </path>
 
   <target name="compile">
+    <mkdir dir="lib"/>
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src}" destdir="${classes.dir}">
       <classpath refid="classpath"/>
